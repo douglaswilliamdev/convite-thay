@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Vamos sair ?</title>
     <style>
-      /* ================= MOBILE FIRST ================= */
       body {
         text-align: center;
         font-family: Arial, sans-serif;
@@ -15,13 +14,11 @@
         margin: 0;
         padding: 0;
       }
-
       h1 {
         margin-top: 80px;
         font-size: 24px;
         color: #1a0fb8;
       }
-
       .texto {
         max-width: 90%;
         margin: 20px auto;
@@ -29,14 +26,12 @@
         line-height: 1.6;
       }
 
-      /* ================= BOTÕES ================= */
       .botoes {
         display: flex;
         justify-content: center;
         gap: 50px;
         margin-top: 30px;
         flex-wrap: wrap;
-        position: relative;
         row-gap: 10px;
       }
 
@@ -52,24 +47,21 @@
           transform 0.2s,
           background 0.2s;
       }
-
       #sim {
         background-color: #28a745;
       }
-
       #sim:hover {
         transform: scale(1.05);
       }
-
       #nao {
         background-color: #dc3545;
+        z-index: 100;
+        touch-action: none;
       }
-
       #nao:hover {
         transform: scale(1.05);
       }
 
-      /* ================= POPUP ================= */
       .popup {
         position: fixed;
         top: 0;
@@ -85,12 +77,10 @@
         transition: opacity 0.4s ease;
         z-index: 10;
       }
-
       .popup.ativo {
         opacity: 1;
         visibility: visible;
       }
-
       .conteudo {
         background: white;
         padding: 20px;
@@ -101,11 +91,9 @@
         transform: scale(0.7) translateY(50px);
         transition: transform 0.4s ease;
       }
-
       .popup.ativo .conteudo {
         transform: scale(1) translateY(0);
       }
-
       .fechar {
         margin-top: 15px;
         padding: 10px 20px;
@@ -116,7 +104,6 @@
         cursor: pointer;
       }
 
-      /* ================= CORAÇÕES ================= */
       .heart-bg {
         position: absolute;
         top: 0;
@@ -126,7 +113,6 @@
         pointer-events: none;
         z-index: 0;
       }
-
       .heart {
         position: absolute;
         color: #ff4d6d;
@@ -134,7 +120,6 @@
         animation: fadeInOut 3s infinite ease-in-out;
         opacity: 0;
       }
-
       @keyframes fadeInOut {
         0%,
         100% {
@@ -147,7 +132,6 @@
         }
       }
 
-      /* ================= FUNDO MUSICAL ================= */
       .musica {
         position: fixed;
         width: 100%;
@@ -157,7 +141,6 @@
         overflow: hidden;
         z-index: -1;
       }
-
       .musica span {
         position: absolute;
         bottom: -50px;
@@ -166,7 +149,6 @@
         animation: subirMusica 8s linear infinite;
         opacity: 0.9;
       }
-
       @keyframes subirMusica {
         0% {
           transform: translateY(100vh) translateX(0);
@@ -181,7 +163,6 @@
         }
       }
 
-      /* ================= TABLETS ================= */
       @media (min-width: 600px) {
         h1 {
           font-size: 28px;
@@ -197,8 +178,6 @@
           padding: 15px 25px;
         }
       }
-
-      /* ================= DESKTOP ================= */
       @media (min-width: 1024px) {
         h1 {
           font-size: 32px;
@@ -210,10 +189,8 @@
       }
     </style>
   </head>
-
   <body>
     <div class="heart-bg" id="heartContainer"></div>
-
     <h1>Vamos sair ?</h1>
     <p class="texto">
       Eu Moisès, também conhecido como ó nerd, venho por meio desta convidar a
@@ -226,7 +203,6 @@
       <button id="nao">Não</button>
     </div>
 
-    <!-- POPUP -->
     <div id="popup" class="popup">
       <div class="conteudo">
         <h2>Nosso encontro!!!</h2>
@@ -247,7 +223,7 @@
       const container = document.getElementById("heartContainer");
       const heartIcons = ["🎧", "🎶", "🎵", "🎤"];
 
-      // criar corações animados
+      // corações
       for (let i = 0; i < 40; i++) {
         const heart = document.createElement("div");
         heart.classList.add("heart");
@@ -260,39 +236,28 @@
         container.appendChild(heart);
       }
 
-      // botão "Não" foge
-      const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
-
-      if (!isMobile) {
-        botaoNao.addEventListener("mouseover", () => {
-          const largura = window.innerWidth - botaoNao.offsetWidth;
-          const altura = window.innerHeight - botaoNao.offsetHeight;
-          const novaPosX = Math.random() * largura;
-          const novaPosY = Math.random() * altura;
-
-          botaoNao.style.position = "fixed";
-          botaoNao.style.left = novaPosX + "px";
-          botaoNao.style.top = novaPosY + "px";
-          botaoNao.style.zIndex = 100;
-        });
-      }
-
-      // Função que move o botão para uma posição aleatória
+      // Função que move o botão "Não"
       function moverBotaoNao() {
         const largura = window.innerWidth - botaoNao.offsetWidth;
         const altura = window.innerHeight - botaoNao.offsetHeight;
         const novaPosX = Math.random() * largura;
         const novaPosY = Math.random() * altura;
 
-        botaoNao.style.position = "fixed"; // fixa na viewport
+        botaoNao.style.position = "fixed";
         botaoNao.style.left = novaPosX + "px";
         botaoNao.style.top = novaPosY + "px";
         botaoNao.style.zIndex = 100;
+
+        // remove do fluxo do flexbox para não interferir
+        botaoNao.parentElement.style.pointerEvents = "none";
+        setTimeout(() => {
+          botaoNao.parentElement.style.pointerEvents = "auto";
+        }, 10);
       }
 
-      // Eventos para desktop e mobile
-      botaoNao.addEventListener("mouseover", moverBotaoNao); // desktop
-      botaoNao.addEventListener("touchstart", moverBotaoNao); // mobile
+      // eventos desktop e mobile
+      botaoNao.addEventListener("mouseover", moverBotaoNao);
+      botaoNao.addEventListener("touchstart", moverBotaoNao);
 
       function aceitou() {
         document.getElementById("popup").classList.add("ativo");
