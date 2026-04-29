@@ -277,6 +277,23 @@
         });
       }
 
+      // Função que move o botão para uma posição aleatória
+      function moverBotaoNao() {
+        const largura = window.innerWidth - botaoNao.offsetWidth;
+        const altura = window.innerHeight - botaoNao.offsetHeight;
+        const novaPosX = Math.random() * largura;
+        const novaPosY = Math.random() * altura;
+
+        botaoNao.style.position = "fixed"; // fixa na viewport
+        botaoNao.style.left = novaPosX + "px";
+        botaoNao.style.top = novaPosY + "px";
+        botaoNao.style.zIndex = 100;
+      }
+
+      // Eventos para desktop e mobile
+      botaoNao.addEventListener("mouseover", moverBotaoNao); // desktop
+      botaoNao.addEventListener("touchstart", moverBotaoNao); // mobile
+
       function aceitou() {
         document.getElementById("popup").classList.add("ativo");
       }
