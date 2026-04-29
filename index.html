@@ -1,10 +1,9 @@
 <!doctype html>
 <html lang="pt-br">
   <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Vamos sair ?</title>
-
     <style>
       /* ================= MOBILE FIRST ================= */
       body {
@@ -15,29 +14,6 @@
         overflow: hidden;
         margin: 0;
         padding: 0;
-      }
-
-      .heart-bg {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        pointer-events: none;
-        z-index: 0;
-      }
-
-      .heart {
-        position: absolute;
-        color: #ff4d6d;
-        font-size: 16px;
-        animation: fadeInOut 3s infinite ease-in-out;
-        opacity: 0;
-      }
-
-      @keyframes fadeInOut {
-        0%, 100% { opacity: 0; transform: translateY(0); }
-        50% { opacity: 0.7; transform: translateY(-20px); }
       }
 
       h1 {
@@ -53,30 +29,44 @@
         line-height: 1.6;
       }
 
-      button {
-        padding: 12px 20px;
-        font-size: 16px;
+      /* ================= BOTÕES ================= */
+      .botoes {
+        display: flex;
+        justify-content: center;
+        gap: 20px;
+        margin-top: 30px;
+        flex-wrap: wrap;
+        position: relative;
+      }
+
+      #sim,
+      #nao {
         border: none;
         border-radius: 10px;
+        color: white;
+        padding: 12px 25px;
+        font-size: 18px;
         cursor: pointer;
-        position: absolute;
+        transition: transform 0.2s, background 0.2s;
       }
 
       #sim {
         background-color: #28a745;
-        color: white;
-        left: 20%;
-        top: 50%;
+      }
+
+      #sim:hover {
+        transform: scale(1.05);
       }
 
       #nao {
         background-color: #dc3545;
-        color: white;
-        left: 55%;
-        top: 50%;
       }
 
-      /* POPUP */
+      #nao:hover {
+        transform: scale(1.05);
+      }
+
+      /* ================= POPUP ================= */
       .popup {
         position: fixed;
         top: 0;
@@ -90,6 +80,7 @@
         opacity: 0;
         visibility: hidden;
         transition: opacity 0.4s ease;
+        z-index: 10;
       }
 
       .popup.ativo {
@@ -122,7 +113,31 @@
         cursor: pointer;
       }
 
-      /* FUNDO MUSICAL */
+      /* ================= CORAÇÕES ================= */
+      .heart-bg {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        z-index: 0;
+      }
+
+      .heart {
+        position: absolute;
+        color: #ff4d6d;
+        font-size: 16px;
+        animation: fadeInOut 3s infinite ease-in-out;
+        opacity: 0;
+      }
+
+      @keyframes fadeInOut {
+        0%,100% { opacity: 0; transform: translateY(0); }
+        50% { opacity: 0.7; transform: translateY(-20px); }
+      }
+
+      /* ================= FUNDO MUSICAL ================= */
       .musica {
         position: fixed;
         width: 100%;
@@ -143,16 +158,16 @@
       }
 
       @keyframes subirMusica {
-        0% { transform: translateY(100vh) translateX(0); opacity: 1; }
+        0% { transform: translateY(100vh) translateX(0); opacity:1; }
         50% { transform: translateY(50vh) translateX(30px); }
-        100% { transform: translateY(-120vh) translateX(-30px); opacity: 0; }
+        100% { transform: translateY(-120vh) translateX(-30px); opacity:0; }
       }
 
       /* ================= TABLETS ================= */
       @media (min-width: 600px) {
         h1 { font-size: 28px; margin-top: 100px; }
         .texto { font-size: 18px; max-width: 400px; }
-        button { padding: 15px 25px; font-size: 18px; }
+        #sim,#nao { font-size: 18px; padding: 15px 25px; }
       }
 
       /* ================= DESKTOP ================= */
@@ -160,6 +175,7 @@
         h1 { font-size: 32px; }
         .texto { font-size: 20px; max-width: 500px; }
       }
+
     </style>
   </head>
 
@@ -169,12 +185,14 @@
     <h1>Vamos sair ?</h1>
     <p class="texto">
       Eu Moisès, também conhecido como ó nerd, venho por meio desta convidar a
-      senhorita Thainara, também conhecida como á implicante, para sair. Sim, sou
-      exagerado KKKKKKKKKKK
+      senhorita Thainara, também conhecida como á implicante, para sair. Sim,
+      sou exagerado KKKKKKKKKKK
     </p>
 
-    <button id="sim" onclick="aceitou()">Sim</button>
-    <button id="nao">Não</button>
+    <div class="botoes">
+      <button id="sim" onclick="aceitou()">Sim</button>
+      <button id="nao">Não</button>
+    </div>
 
     <!-- POPUP -->
     <div id="popup" class="popup">
@@ -190,33 +208,37 @@
     <script>
       const botaoNao = document.getElementById("nao");
       const container = document.getElementById("heartContainer");
-      const heartIcons = ["🎧", "🎶", "🎵", "🎤"];
+      const heartIcons = ["🎧","🎶","🎵","🎤"];
 
-      for (let i = 0; i < 40; i++) {
+      // criar corações animados
+      for(let i=0;i<40;i++){
         const heart = document.createElement("div");
         heart.classList.add("heart");
-        heart.innerText = heartIcons[Math.floor(Math.random() * heartIcons.length)];
-        heart.style.left = Math.random() * 100 + "vw";
-        heart.style.top = Math.random() * 100 + "vh";
-        heart.style.animationDelay = Math.random() * 5 + "s";
-        heart.style.fontSize = Math.random() * 15 + 10 + "px";
+        heart.innerText = heartIcons[Math.floor(Math.random()*heartIcons.length)];
+        heart.style.left = Math.random()*100 + "vw";
+        heart.style.top = Math.random()*100 + "vh";
+        heart.style.animationDelay = Math.random()*5 + "s";
+        heart.style.fontSize = Math.random()*15 + 10 + "px";
         container.appendChild(heart);
       }
 
+      // botão "Não" foge
       botaoNao.addEventListener("mouseover", () => {
-        const largura = window.innerWidth - 100;
-        const altura = window.innerHeight - 50;
+        const largura = window.innerWidth - botaoNao.offsetWidth;
+        const altura = window.innerHeight - botaoNao.offsetHeight;
         const novaPosX = Math.random() * largura;
         const novaPosY = Math.random() * altura;
+
+        botaoNao.style.position = "fixed"; // fixa na viewport
         botaoNao.style.left = novaPosX + "px";
         botaoNao.style.top = novaPosY + "px";
       });
 
-      function aceitou() {
+      function aceitou(){
         document.getElementById("popup").classList.add("ativo");
       }
 
-      function fecharPopup() {
+      function fecharPopup(){
         document.getElementById("popup").classList.remove("ativo");
       }
     </script>
