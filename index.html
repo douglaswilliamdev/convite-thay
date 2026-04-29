@@ -40,14 +40,17 @@
         row-gap: 10px;
       }
 
-      #sim, #nao {
+      #sim,
+      #nao {
         border: none;
         border-radius: 10px;
         color: white;
         padding: 12px 25px;
         font-size: 18px;
         cursor: pointer;
-        transition: transform 0.2s, background 0.2s;
+        transition:
+          transform 0.2s,
+          background 0.2s;
       }
 
       #sim {
@@ -73,7 +76,7 @@
         left: 0;
         width: 100%;
         height: 100%;
-        background: rgba(0,0,0,0.6);
+        background: rgba(0, 0, 0, 0.6);
         display: flex;
         justify-content: center;
         align-items: center;
@@ -133,8 +136,15 @@
       }
 
       @keyframes fadeInOut {
-        0%,100% { opacity: 0; transform: translateY(0); }
-        50% { opacity: 0.7; transform: translateY(-20px); }
+        0%,
+        100% {
+          opacity: 0;
+          transform: translateY(0);
+        }
+        50% {
+          opacity: 0.7;
+          transform: translateY(-20px);
+        }
       }
 
       /* ================= FUNDO MUSICAL ================= */
@@ -158,24 +168,46 @@
       }
 
       @keyframes subirMusica {
-        0% { transform: translateY(100vh) translateX(0); opacity:1; }
-        50% { transform: translateY(50vh) translateX(30px); }
-        100% { transform: translateY(-120vh) translateX(-30px); opacity:0; }
+        0% {
+          transform: translateY(100vh) translateX(0);
+          opacity: 1;
+        }
+        50% {
+          transform: translateY(50vh) translateX(30px);
+        }
+        100% {
+          transform: translateY(-120vh) translateX(-30px);
+          opacity: 0;
+        }
       }
 
       /* ================= TABLETS ================= */
       @media (min-width: 600px) {
-        h1 { font-size: 28px; margin-top: 100px; }
-        .texto { font-size: 18px; max-width: 400px; }
-        #sim,#nao { font-size: 18px; padding: 15px 25px; }
+        h1 {
+          font-size: 28px;
+          margin-top: 100px;
+        }
+        .texto {
+          font-size: 18px;
+          max-width: 400px;
+        }
+        #sim,
+        #nao {
+          font-size: 18px;
+          padding: 15px 25px;
+        }
       }
 
       /* ================= DESKTOP ================= */
       @media (min-width: 1024px) {
-        h1 { font-size: 32px; }
-        .texto { font-size: 20px; max-width: 500px; }
+        h1 {
+          font-size: 32px;
+        }
+        .texto {
+          font-size: 20px;
+          max-width: 500px;
+        }
       }
-
     </style>
   </head>
 
@@ -199,8 +231,13 @@
       <div class="conteudo">
         <h2>Nosso encontro!!!</h2>
         <p>📅 Data: <strong>02 de Maio</strong></p>
-        <p>📍 Local 1: <strong>Fiorino (Av. Heitor Beltrão, 126 - Tijuca)</strong></p>
-        <p>📍 Local 2: <strong>Heaven Cucina (Shopping Vogue Square)</strong></p>
+        <p>
+          📍 Local 1:
+          <strong>Fiorino (Av. Heitor Beltrão, 126 - Tijuca)</strong>
+        </p>
+        <p>
+          📍 Local 2: <strong>Heaven Cucina (Shopping Vogue Square)</strong>
+        </p>
         <button class="fechar" onclick="fecharPopup()">Fechar</button>
       </div>
     </div>
@@ -208,37 +245,43 @@
     <script>
       const botaoNao = document.getElementById("nao");
       const container = document.getElementById("heartContainer");
-      const heartIcons = ["🎧","🎶","🎵","🎤"];
+      const heartIcons = ["🎧", "🎶", "🎵", "🎤"];
 
       // criar corações animados
-      for(let i=0;i<40;i++){
+      for (let i = 0; i < 40; i++) {
         const heart = document.createElement("div");
         heart.classList.add("heart");
-        heart.innerText = heartIcons[Math.floor(Math.random()*heartIcons.length)];
-        heart.style.left = Math.random()*100 + "vw";
-        heart.style.top = Math.random()*100 + "vh";
-        heart.style.animationDelay = Math.random()*5 + "s";
-        heart.style.fontSize = Math.random()*15 + 10 + "px";
+        heart.innerText =
+          heartIcons[Math.floor(Math.random() * heartIcons.length)];
+        heart.style.left = Math.random() * 100 + "vw";
+        heart.style.top = Math.random() * 100 + "vh";
+        heart.style.animationDelay = Math.random() * 5 + "s";
+        heart.style.fontSize = Math.random() * 15 + 10 + "px";
         container.appendChild(heart);
       }
 
       // botão "Não" foge
-      botaoNao.addEventListener("mouseover", () => {
-        const largura = window.innerWidth - botaoNao.offsetWidth;
-        const altura = window.innerHeight - botaoNao.offsetHeight;
-        const novaPosX = Math.random() * largura;
-        const novaPosY = Math.random() * altura;
+      const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
 
-        botaoNao.style.position = "fixed"; // fixa na viewport
-        botaoNao.style.left = novaPosX + "px";
-        botaoNao.style.top = novaPosY + "px";
-      });
+      if (!isMobile) {
+        botaoNao.addEventListener("mouseover", () => {
+          const largura = window.innerWidth - botaoNao.offsetWidth;
+          const altura = window.innerHeight - botaoNao.offsetHeight;
+          const novaPosX = Math.random() * largura;
+          const novaPosY = Math.random() * altura;
 
-      function aceitou(){
+          botaoNao.style.position = "fixed";
+          botaoNao.style.left = novaPosX + "px";
+          botaoNao.style.top = novaPosY + "px";
+          botaoNao.style.zIndex = 100;
+        });
+      }
+
+      function aceitou() {
         document.getElementById("popup").classList.add("ativo");
       }
 
-      function fecharPopup(){
+      function fecharPopup() {
         document.getElementById("popup").classList.remove("ativo");
       }
     </script>
